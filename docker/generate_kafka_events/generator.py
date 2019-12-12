@@ -26,8 +26,7 @@ def getEvent(uid: str, ipAddress: str):
     timestamp = int(time.time())
     return bytes(f'{{ "uid":"{uid}", "timestamp":{timestamp}, "ip":"{ipAddress}"}}', encoding='utf-8')
 
-
-kafkaProducer = KafkaProducer(bootstrap_servers=['kafka:9092'])
+kafkaProducer = KafkaProducer(bootstrap_servers=['kafka:9093'])
 msTime = 1 / 10
 uidList = generateRandomUidList()
 ipList = generateRandomIpList()
