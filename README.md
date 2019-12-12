@@ -39,18 +39,8 @@ $> cd kafka_2.11-2.0.1/bin
 $> kafkacat -b localhost:9092 -t clicks
 ```
 
-If you get an error saying `kafka` host in unknown, you can redirect `kafka` to `localhost` in your `/etc/hosts` as shown here :
-```
-$> cat /etc/hosts
-127.0.0.1  localhost
-255.255.255.255  broadcasthost
-::1 localhost kafka
-```
-then both commands should work :
-```
-$> kafkacat -b kafka:9092 -t clicks
-$> kafkacat -b localhost:9092 -t clicks
-```
+You will notice in the python script we're targeting port 9293 since it's running from a container
+Cf. kafka cluster config
 
 ### Inject events to Kafka
 
