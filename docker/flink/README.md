@@ -45,3 +45,17 @@ data
 senv.execute("Wordcount using DataStream API")
 
 ```
+
+### Using SQL :
+
+```
+val source = senv.readTextFile("/usr/src/app/data/lorem-ipsum.txt")
+
+stenv.registerDataStream("Words", source);
+
+val result = stenv.sqlQuery("SELECT * FROM Words")
+
+result.toAppendStream[String].print
+
+stenv.execute("test""Wordcount using SQL")
+```
