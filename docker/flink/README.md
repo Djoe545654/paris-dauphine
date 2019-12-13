@@ -49,13 +49,24 @@ senv.execute("Wordcount using DataStream API")
 ### Using SQL :
 
 ```
+import org.apache.flink.table.functions.TableFunction // Needed to create our UDF
+
 val source = senv.readTextFile("/usr/src/app/data/lorem-ipsum.txt")
 
+class $SplitUdtf extends TableFunction[String] {
+    def eval(s: String): Unit = {
+      s.toLowerCase.split("\\W+").foreach(collect)
+    }
+  }
+
+stenv.registerFunction("SplitUdtf", new $SplitUdtf)
 stenv.registerDataStream("Words", source);
 
-val result = stenv.sqlQuery("SELECT * FROM Words")
+val result = stenv.sqlQuery("""SELECT T.word, COUNT(1)
+    FROM Words, LATERAL TABLE(SplitUdtf(f0)) AS T(word)
+    GROUP BY T.word""")
 
-result.toAppendStream[String].print
+result.toRetractStream[(String, Long)].print
 
-stenv.execute("test""Wordcount using SQL")
+stenv.execute("Wordcount using SQL")
 ```
