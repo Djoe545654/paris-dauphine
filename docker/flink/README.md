@@ -14,7 +14,7 @@ $> docker run -it --rm  -v "$PWD":/usr/src/app -w /usr/src/app flink:1.9.1-scala
 
 ## Word count
 
-### Using the Dataset API :
+### Using the DataSet API :
 
 ```
 val data = benv.readTextFile("/usr/src/app/data/lorem-ipsum.txt")
@@ -26,5 +26,22 @@ data
   .groupBy(0)
   .sum(1)
   .print
+
+```
+
+### Using the DataStream API :
+
+```
+val data = senv.readTextFile("/usr/src/app/data/lorem-ipsum.txt")
+
+data
+  .filter(_.nonEmpty)
+  .flatMap(_.split(" "))
+  .map((_, 1))
+  .groupkeyBy(0)
+  .sum(1)
+  .print
+
+senv.execute("Wordcount using DataStream API")
 
 ```
