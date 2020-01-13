@@ -38,7 +38,7 @@ data
   .filter(_.nonEmpty)
   .flatMap(_.split(" "))
   .map((_, 1))
-  .groupkeyBy(0)
+  .keyBy(0)
   .sum(1)
   .print
 
